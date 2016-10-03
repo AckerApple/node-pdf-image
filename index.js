@@ -59,10 +59,11 @@ PDFImage.prototype = {
       return info["Pages"];
     });
   },
-  getOutputImagePathForPage: function (pageNumber) {
+  /** @options{omitPageNumOnFileName:Boolean} */
+  getOutputImagePathForPage: function (pageNumber, options) {
     return path.join(
       this.outputDirectory,
-      this.pdfFileBaseName + "-" + pageNumber + "." + this.convertExtension
+      this.pdfFileBaseName + (!options||!options.omitPageNumOnFileName?"-"+pageNumber:"") + "." + this.convertExtension
     );
   },
   setConvertOptions: function (convertOptions) {
@@ -71,9 +72,9 @@ PDFImage.prototype = {
   setConvertExtension: function (convertExtension) {
     this.convertExtension = convertExtension || "png";
   },
-  constructConvertCommandForPage: function (pageNumber) {
+  constructConvertCommandForPage: function (pageNumber, options) {
     var pdfFilePath = this.pdfFilePath;
-    var outputImagePath = this.getOutputImagePathForPage(pageNumber);
+    var outputImagePath = this.getOutputImagePathForPage(pageNumber, options);
     var convertOptionsString = this.constructConvertOptions();
     return util.format(
       "%s %s'%s[%d]' '%s'",
@@ -91,10 +92,10 @@ PDFImage.prototype = {
       }
     }, this).join(" ");
   },
-  convertPage: function (pageNumber) {
+  convertPage: function (pageNumber, options) {
     var pdfFilePath     = this.pdfFilePath;
-    var outputImagePath = this.getOutputImagePathForPage(pageNumber);
-    var convertCommand  = this.constructConvertCommandForPage(pageNumber);
+    var outputImagePath = this.getOutputImagePathForPage(pageNumber, options);
+    var convertCommand  = this.constructConvertCommandForPage(pageNumber, options);
 
     var promise = new Promise(function (resolve, reject) {
       function convertPageToImage() {

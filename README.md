@@ -28,6 +28,10 @@ pdfImage.convertPage(0).then(function (imagePath) {
   fs.existsSync("/tmp/slide-0.png") // => true
 });
 ```
+> Note: If you do NOT want page numbers in your image file names, use option "omitPageNumOnFileName"
+```
+pdfImage.convertPage(0, {omitPageNumOnFileName:true}).then()
+```
 
 ## Express
 

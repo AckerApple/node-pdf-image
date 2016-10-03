@@ -24,6 +24,8 @@ describe("PDFImage", function () {
       .equal("/tmp/test-2.png");
     expect(pdfImage.getOutputImagePathForPage(1000))
       .equal("/tmp/test-1000.png");
+    expect(pdfImage.getOutputImagePathForPage(1000,{omitPageNumOnFileName:true}))
+      .equal("/tmp/test.png");
   });
 
   it("should return correct convert command", function () {
